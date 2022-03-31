@@ -1,0 +1,28 @@
+import os
+import re
+import sys
+import tempfile
+import pandas as pd
+import numpy as np
+#from pathlib2 import Path
+
+configfile: "config.yaml" # may make different so don't have to append to atlas file
+# the above may have an issue with the database directory
+from atlas.default_values import * 
+from atlas.sample_table import load_sample_table
+
+CONDAENV = "envs"  # overwrite definition in download.smk
+
+sampleTable = load_sample_table()
+
+DBDIR = config["database_dir"] # problem here? 
+SAMPLES = sampleTable.index.values
+
+# include: "rules/genomes.smk"
+include: "rules/abricate.smk"
+#include: "rules/genomes.smk"
+
+
+rule all:
+	input:"finished_abricate"
+
