@@ -1,0 +1,8 @@
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - cat
+  - diamond==2.0.14
+  - prodigal==2.6.3
