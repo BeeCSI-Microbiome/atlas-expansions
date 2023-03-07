@@ -6,3 +6,6 @@ To use:
   3. You will have to put a symbolic link (or download the databases) to CAT/BAT taxonomy and database you would like to use see https://github.com/dutilh/CAT for details.
   5. You will have to put a symbolic link or the "CAT_Pack" folder from https://github.com/dutilh/CAT in the directory of the ATLAS results you will be analyzing. 
   6. while in the ATLAS directory you wish to analyze with this package run " {ATLAS conda environment} run all --snakefile {location of the Snakefile of this package} "
+
+
+Join patch provides a quick bash script to temporarily fix issue with joining Taxonomomies and abricate data. 
