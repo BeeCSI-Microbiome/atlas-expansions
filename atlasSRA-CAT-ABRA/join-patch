@@ -1,0 +1,101 @@
+NOTES: Quick patch for merging CAT/gtdbk results with abricate - may fix later in pipeline. 
+
+****************** MAG Merging ***********************
+
+for file in summary_mag_*; do
+sed 's/genomes\/genomes\///g' ${file} > temp.txt
+sed 's/.fasta//g' temp.txt > ${file}
+join -1 1 -2 1 <(sort ${file}) <(sort ../../taxonomy/gtdb_taxonomy.tsv) >> AllMAGTaxonomy.txt
+done
+
+
+******************* Contig Merging ************************
+
+for file in summary_contig_*; do
+for sample in ../../../*/CAT/*official*; do
+join -1 2 -2 1 <(sort -k2,2 ${file}) <(sort -k1,1 ${sample}) >> AllContigTaxonomy.txt
+done
+done
+
+
+******************* Bin Merging  ******************************
+
+for file in summary_bin_*; do
+for sample in ../../../*/BAT/*official*; do
+sed -r 's/^\w+\/\w+\/\w+\/bins\///g' ${file} > temp.txt
+join -1 1 -2 1 <(sort -k1,1 temp.txt) <(sort -k1,1 ${sample}) >> AllBinTaxonomy.txt
+done
+done
+
+******************* Auto All *********************************************
+for folder in */genomes/annotations/abricate; do
+
+cd ${folder}
+
+for file in summary_mag_*; do
+sed 's/genomes\/genomes\///g' ${file} > temp.txt
+sed 's/.fasta//g' temp.txt > ${file}
+join -1 1 -2 1 <(sort ${file}) <(sort ../../taxonomy/gtdb_taxonomy.tsv) >> AllMAGTaxonomy.txt
+done
+
+
+for file in summary_contig_*; do
+for sample in ../../../*/CAT/*official*; do
+join -1 2 -2 1 <(sort -k2,2 ${file}) <(sort -k1,1 ${sample}) >> AllContigTaxonomy.txt
+done
+done
+
+for file in summary_bin_*; do
+for sample in ../../../*/BAT/*official*; do
+sed -r 's/^\w+\/\w+\/\w+\/bins\///g' ${file} > temp.txt
+join -1 1 -2 1 <(sort -k1,1 temp.txt) <(sort -k1,1 ${sample}) >> AllBinTaxonomy.txt
+done
+done
+
+for file in summary_bin_*; do
+for sample in ../../../*/BAT/*official*; do
+sed -r 's/^\w+\W+\w+\/\w+\/\w+\/bins\///g' ${file} > temp.txt
+join -1 1 -2 1 <(sort -k1,1 temp.txt) <(sort -k1,1 ${sample}) >> AllBinTaxonomy.txt
+done
+done
+
+head *Tax*
+
+cd ../../../../
+done
+
+
+******************* BinRedo *********************************************
+for folder in */genomes/annotations/abricate; do
+
+cd ${folder}
+
+for file in summary_bin_*; do
+for sample in ../../../*/BAT/*official*; do
+sed -r 's/^\w+\/\w+\/\w+\/bins\///g' ${file} > temp.txt
+join -1 1 -2 1 <(sort -k1,1 temp.txt) <(sort -k1,1 ${sample}) >> AllBinTaxonomy.txt
+done
+done
+
+head *Tax*
+
+cd ../../../../
+done
+
+
+******************* weird Names (BINS) *********************************************
+for folder in */genomes/annotations/abricate; do
+
+cd ${folder}
+
+for file in summary_bin_*; do
+for sample in ../../../*/BAT/*official*; do
+sed -r 's/^\w+\W+\w+\/\w+\/\w+\/bins\///g' ${file} > temp.txt
+join -1 1 -2 1 <(sort -k1,1 temp.txt) <(sort -k1,1 ${sample}) >> AllBinTaxonomy.txt
+done
+done
+
+head *BinTax*
+
+cd ../../../../
+done
